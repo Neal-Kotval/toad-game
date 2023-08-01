@@ -3,7 +3,7 @@ import Brackets from '../../components/Bracket/Bracket';
 import "../../styles/globals.scss";
 import Navbar from '../../components/Navbar/Navbar';
 
-const BracketsPage = () => {
+export default function BracketsPage() {
   return (
     <div>
         <Navbar/>
@@ -11,5 +11,3 @@ const BracketsPage = () => {
     </div>
   );
 };
-
-export default BracketsPage;

@@ -8,8 +8,9 @@ interface NavbarProps {
 
 const links = [
   { text: 'Bracket', url: '/bracket' },
-  { text: 'Winners', url: '/contact' },
-  { text: 'Rewards', url: '/projects'}
+  { text: 'Dashboard', url: '/dashboard'},
+  { text: 'Submission', url: '/submission' },
+  { text: 'Log In', url: '/login'},
   // Add more links as needed
 ];
 
