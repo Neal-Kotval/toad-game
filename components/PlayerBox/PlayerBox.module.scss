@@ -1,75 +1,50 @@
-// components/PlayerBox.scss
+/* components/PlayerBox.module.scss */
 
-.container {
-    // Add any additional styles for the container if needed
-  }
-  .scoreValue {
-    font-size: 40px;
-    font-weight: bold;
-    color: #fff;
-    margin-left: 900px;
-  }
-
-  .imageContainer {
+.image_with_overlay {
     position: relative;
-    width: 100%;
-    height: 150px; // Adjust the height to the desired size (the width will adjust proportionally)
-    border-radius: 5px; // Add border-radius to round the corners of the image
-    overflow: hidden; // Hide any part of the image that overflows the container
-    display: flex; // Use Flexbox to center the image
-    justify-content: center; // Center the image horizontally
-    align-items: center; // Center the image vertically
-    margin-bottom: 30px;
-    margin-top: 30px;
-    transition: transform 0.3s; // Add the transition property for smooth scaling animation
-  }
-  
-  .image {
-    max-width: 100%;
-    max-height: 100%; // Use max-height to maintain the aspect ratio of the image
-    object-fit: contain; // Fit the entire image within the container while maintaining aspect ratio
-  }
-  
-  .overlay {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    display: flex; // Use CSS Flexbox to arrange the name and score container horizontally
-    justify-content: space-between; // Horizontally distribute the name and score container in the overlay
-    padding: 10px; // Add padding to create some space between the name and score
-    border-radius: 5px; // Add border-radius to match the image's corners
-    align-items: center; // Center the image vertically
-  }
-  
-  .scoreContainer {
-    display: flex; // Use Flexbox to arrange the score text and coin image side by side
-    align-items: center; // Center the elements vertically
-  }
-  
-  .score {
-    color: #fff; // Set the text color for the name and score
-    font-size: 40px;
-    font-weight: bold;
-    margin-right: 10px;
-  }
-  
-  .name {
-    color: #fff; // Set the text color for the name and score
-    font-size: 40px;
-    font-weight: bold;
-    position: absolute; // Use absolute positioning to position the name
-    left: 400px; // Adjust the distance from the left edge as needed
-  }
-  
-  .coinImage {
-    width: 50px; // Adjust the width of the coin image as needed
-    height: 50px; // Adjust the height of the coin image as needed
-    margin-left: 20px; // Move the coin image to the right edge by using 'auto' margin on the left
-  }
+    width: 100%; /* Use percentage-based width */
+    height: 100%; /* Use percentage-based height */
+    max-width:1322px;
+    max-height:177px;
+    margin: 0 auto;
+    margin-bottom: 20px;
+    margin-top: 20px;
+    transition: transform 0.3s; /* Add transition for smooth effect */
 
-  .imageContainer:hover {
-    transform: scale(1.05); /* Adjust the scale factor as desired */
+    img {
+        width:100%;
+    }
+  
+    .text_container {
+        margin:0;
+        position: absolute;
+        left:15%;
+        right:20%;
+        top: 50%;
+        transform: translateY(-50%);
+        display: flex; /* Use Flexbox */
+        justify-content: space-between; /* Items will be evenly spaced */
+        align-items: center; /* Align items vertically */
+        padding: 0 8px; /* Add padding to the container */
+    }
+  
+    .name_text,
+    .score_text {
+      color: #fff;
+      font-size: 3vw; /* Use viewport units for font-size */
+      padding: 8px;
+      display:flex;
+      align-items: center;
+    }
+
+    .coin_image {
+        width: 30px;
+        margin-left: 5px; /* Add some spacing between the coin image and text */
+      }
+
+      &:hover {
+        transform: scale(1.05); /* Increase the scale (adjust as desired) */
+      }
+    
   }
   

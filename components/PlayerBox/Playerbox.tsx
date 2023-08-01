@@ -1,26 +1,16 @@
 // components/PlayerBox.js
 
-import React from 'react';
-import styles from './PlayerBox.module.scss';
+import styles from "./PlayerBox.module.scss";
 
 const PlayerBox = ({ name, score }) => {
   return (
-    <div className={styles.container}>
-    <div className={styles.imageContainer}>
-      <img
-        src={"/profile.png"}
-        alt="Player Image"
-        className={styles.image}
-      />
-      <div className={styles.overlay}>
-        <p className={styles.name}>{name}</p>
-        <div className={styles.scoreContainer}>
-          <p className={styles.scoreValue}>{score}</p>
-          <img src={"/coin.png"} alt="Coin Icon" className={styles.coinImage} />
-        </div>
+    <div className={styles.image_with_overlay}>
+      <img src={"/profile.png"} alt="Image" />
+      <div className={styles.text_container}>
+        <div className={styles.name_text}>{name}</div>
+        <div className={styles.score_text}>{score} <img className={styles.coin_image} src="/coin.png" alt="Coin" /></div>
       </div>
     </div>
-  </div>
   );
 };
 
