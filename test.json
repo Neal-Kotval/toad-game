@@ -1,0 +1,29 @@
+{
+    "players": [
+      {
+        "name": "John Doe",
+        "score": 300
+      },
+      {
+        "name": "Jane Smith",
+        "score": 500
+      },
+      {
+        "name": "Michael Johnson",
+        "score": 200
+      },
+      {
+        "name": "Emily Brown",
+        "score": 700
+      },
+      {
+        "name": "William Davis",
+        "score": 800
+      },
+      {
+        "name": "Sophia Wilson",
+        "score": 100
+      }
+    ]
+  }
+  

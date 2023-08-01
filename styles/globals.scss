@@ -1,0 +1,17 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+
+@import './variables.scss';
+
+
+
+/* Apply Vollkorn font-family to the desired elements */
+body {
+  font-family: $Nunito, serif;
+  background-image: url('../public/bg.png'); /* Set the background image path */
+  background-size: cover; /* Adjust background image size */
+  background-repeat: no-repeat; /* Prevent repeating the background */
+  /* Add any other styles for the body element here */
+}

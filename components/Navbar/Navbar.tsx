@@ -1,0 +1,39 @@
+// components/Navbar.tsx
+import styles from './Navbar.module.scss';
+import Link from 'next/link';
+
+interface NavbarProps {
+  // Define any props specific to the navbar component here, if needed.
+}
+
+const links = [
+  { text: 'Bracket', url: '/bracket' },
+  { text: 'Winners', url: '/contact' },
+  { text: 'Rewards', url: '/projects'}
+  // Add more links as needed
+];
+
+const Navbar: React.FC<NavbarProps> = () => {
+  return (
+    <nav>
+      <div className={styles.nav_box}>
+        <div className={styles.logo}>
+          <Link href={'/'}>
+            Toad Game
+          </Link> {/* Add the logo text */}
+        </div>
+        <div className={styles.navbar_links}>
+          {links.map((link) => (
+            <li key={link.url}>
+              <Link href={link.url}>
+                {link.text}
+              </Link>
+            </li>
+          ))}
+        </div>
+      </div>
+    </nav>
+  );
+};
+
+export default Navbar;

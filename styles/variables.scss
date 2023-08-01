@@ -1,0 +1,37 @@
+@import url('https://fonts.googleapis.com/css2?family=Raleway:ital,wght@0,400;0,800;1,700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Vollkorn:ital@0;1&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Nunito&display=swap');
+
+$Raleway: 'Raleway', sans-serif;
+$Vollkorn: 'Vollkorn', sans-serif;
+$Nunito: 'Nunito', sans-serif;
+
+// colors
+
+$dark: rgb(29,29,29);
+$light: #fff;
+$primary: rgb(162, 162, 246);
+$bg: rgb(244,244,255);
+
+
+$rich-black: #0d1321;
+$prussian-blue: #1d2d44;
+$dark-electric: #3e5c76;
+$shadow-blue: #748cab;
+$eggshell-white: #F0EBD8;
+
+$spacing-md: 16px;
+$spacing-lg: 32px;
+
+$borderRadius: 12px;
+
+$headerHeight: 100px;
+
+@mixin breakpoint($point) {
+    @if $point == md {
+        @media (min-width: 48em){
+            @content
+        }
+    }
+}
+

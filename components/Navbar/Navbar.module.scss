@@ -1,0 +1,60 @@
+// components/Navbar.module.scss
+@import "../../styles/variables.scss";
+
+
+.nav_box {
+  background-color: black;
+  color: white;
+  padding: 1.25rem 1rem;
+  justify-content: space-between;
+  align-items: center;
+  display: flex;
+}
+
+.navbar_links {
+  display: flex;
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  // justify-content: flex-end;
+  margin-right: 3rem;
+}
+
+/* Remove default link styles */
+.navbar_links li a {
+  text-decoration: none;
+  color: white;
+  font-weight: bold;
+  text-decoration: underline;
+  text-underline-offset: 0.4rem;
+  font-size: 2rem;
+  font-family: $Nunito, sans-serif; /* Apply the Raleway font */
+  cursor: pointer;
+  padding: 0rem 2rem;
+  border-radius: 4px;
+  transition: background-color 0.3s ease;
+}
+
+/* Add hover effect to links */
+.navbar_links li a:hover {
+  background-color: #555;
+}
+
+/* Remove link styles on focus (optional, for accessibility) */
+.navbar_links li a:focus {
+  outline: none;
+  box-shadow: none;
+}
+
+.logo {
+  display: flex;
+  align-items: center;
+}
+
+.logo a{
+  font-size: 2.5rem;
+  font-weight: bold;
+  font-family: $Nunito, sans-serif;
+  margin-left: 3rem; /* Add spacing between logo and links */
+  color: white;
+}

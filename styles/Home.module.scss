@@ -1,0 +1,104 @@
+/* styles/Home.module.scss */
+
+@keyframes hoverUpDown {
+  0% {
+    transform: translateY(0); /* Start position */
+  }
+  50% {
+    transform: translateY(-5px); /* Move the image 5 pixels up at the middle of the animation */
+  }
+  100% {
+    transform: translateY(0); /* Back to the starting position */
+  }
+}
+
+.container {
+
+
+
+    padding: 20px;
+    text-align: center;
+    color: white;
+  
+
+    img {
+      max-width: 100%;
+      display: block;
+      margin: 20px auto;
+      animation: hoverUpDown 1.5s infinite; /* Apply the animation to the image */
+    }
+
+    h1 {
+      font-size: 50px;
+      margin-bottom: 10px;
+      font-weight: 800;
+      text-decoration: underline;
+      text-underline-offset: 0.5rem;
+      margin-bottom: 20px;
+      padding-bottom: 20px;
+    }
+
+    .whiteLine {
+      width: 100vw;
+      height: 1px;
+      background-color: #fff;
+      margin: 20px 0; /* Adjust margin as needed */
+    }
+
+    h2 {
+      margin-top: 40px;
+      font-size: 35px;
+      margin-bottom: 0px;
+      font-weight: 800;
+      text-decoration: underline;
+      text-underline-offset: 0.5rem;
+      margin-bottom: 0px;
+      padding-bottom: 0px;
+    }
+  
+    > p {
+      font-size: 25px;
+      color: #ffffff;
+      font-style: italic;
+    }
+
+    .hostedByText {
+      font-size: 30px;
+      color: #fff9f9;
+      font-weight: bold;
+      margin-bottom: 40px;
+    }
+
+    .rulesText {
+      font-size: 25px;
+      margin-top: 20px;
+      text-align: center;
+      align-items: center;
+      display: flex;
+      flex-direction: column;
+
+      
+  
+      /* Add spacing between each rule */
+      > .rulesBox {
+        margin-bottom: 10px;
+        padding: 10px;
+        width: 700px; /* Set the desired width */
+        min-height: 0px; /* Set the minimum height (optional) */
+        word-wrap: break-word; /* Allow text to wrap within the box */
+        display: flex;
+        align-items: center; /* Align items vertically */
+        justify-content: center; /* Align items horizontally to the start */
+        // &::before {
+        //   content: '\2022'; /* Unicode character for a bullet point (•) */
+        //   /* Use flexbox for bullet and text alignment */
+        //   width: 1em;
+        //   margin-right: 10px; /* Add spacing between bullet and text */
+        //   color: #ffffff; /* Customize the bullet color (optional) */
+        // }
+      }
+
+    }
+  
+    /* ... other styles ... */
+  }
