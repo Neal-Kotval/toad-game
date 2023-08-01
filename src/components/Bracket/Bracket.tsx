@@ -1,8 +1,7 @@
-
-import PlayerBox from '../PlayerBox/PlayerBox';
+import PlayerBox from "../PlayerBox/PlayerBox";
 
 // Import the JSON data (replace './sampleData.json' with your actual JSON file path)
-import playerData from '../../test.json';
+import playerData from "../../../test.json";
 
 const Brackets = () => {
   // Access the players array from the imported JSON data
