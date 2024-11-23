@@ -22,7 +22,7 @@ export default function Home() {
         <div className={styles.rulesText}>
           <div className={styles.rulesBox}>
             <p>
-              &#2022; &nbsp; The tournament will run weekly from Monday to
+              &#2022; &nbsp; The tournament runs weekly from Monday to
               Wednesday
             </p>
           </div>

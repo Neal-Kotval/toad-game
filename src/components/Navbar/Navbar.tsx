@@ -1,6 +1,9 @@
 // components/Navbar.tsx
+
+
 import styles from './Navbar.module.scss';
 import Link from 'next/link';
+import { signIn } from 'next-auth/react';
 
 interface NavbarProps {
   // Define any props specific to the navbar component here, if needed.
@@ -25,12 +28,16 @@ const Navbar: React.FC<NavbarProps> = () => {
         </div>
         <div className={styles.navbar_links}>
           {links.map((link) => (
-            <li key={link.url}>
-              <Link href={link.url}>
-                {link.text}
-              </Link>
-            </li>
-          ))}
+              <li key={link.url}>
+                {link.text === 'Log In' ? (
+                  <button className={styles.loginButton} onClick={() => signIn()}>
+                    {link.text}
+                  </button>
+                ) : (
+                  <Link href={link.url}>{link.text}</Link>
+                )}
+              </li>
+            ))}
         </div>
       </div>
     </nav>

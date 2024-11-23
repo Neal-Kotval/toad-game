@@ -26,6 +26,7 @@
       display: block;
       margin: 20px auto;
       animation: hoverUpDown 1.5s infinite; /* Apply the animation to the image */
+      // transition-timing-function: cubic-bezier(.82,.14,.4,.92);
     }
 
     h1 {
