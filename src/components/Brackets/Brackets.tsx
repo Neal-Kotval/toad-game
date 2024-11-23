@@ -1,3 +1,4 @@
+import styles from "./Brackets.module.scss";
 import PlayerBox from "../PlayerBox/PlayerBox";
 
 // Import the JSON data (replace './sampleData.json' with your actual JSON file path)
@@ -12,11 +13,11 @@ const Brackets = () => {
 
   // Render the brackets layout using the sorted player data and PlayerBox component
   return (
-    <div>
-      {/* Your brackets layout */}
-      {/* For example, map over the sorted players array and render each player using the PlayerBox component */}
+    <div className={styles.bracketsContainer}>
       {players.map((player, index) => (
-        <PlayerBox key={index} name={player.name} score={player.score} />
+        <div key={index} className={styles.playerBox}>
+          <PlayerBox name={player.name} score={player.score} />
+        </div>
       ))}
     </div>
   );

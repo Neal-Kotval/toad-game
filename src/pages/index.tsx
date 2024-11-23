@@ -15,9 +15,7 @@ export default function Home() {
         <div className={styles.hostedByText}>
           <p>Hosted by Nyelson</p>
         </div>
-
-        <div className={styles.whiteLine}></div>
-
+        <div className={styles.wrap}></div>
         <h2>Rules:</h2>
         <div className={styles.rulesText}>
           <div className={styles.rulesBox}>

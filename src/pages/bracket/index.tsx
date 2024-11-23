@@ -1,5 +1,5 @@
 // pages/brackets.js
-import Brackets from "../../components/Bracket/Bracket";
+import Brackets from "../../components/Brackets/Brackets";
 import "../../styles/globals.scss";
 import Navbar from "../../components/Navbar/Navbar";
 

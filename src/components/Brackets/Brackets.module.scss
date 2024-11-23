@@ -1,0 +1,15 @@
+.bracketsContainer {
+    display: flex;
+    flex-direction: column;
+    align-items: center; /* Center the player boxes horizontally */
+    padding: 1rem 1rem;
+    margin: 0 auto; /* Center the container horizontally */
+    justify-content: space-between;
+    height:100%;
+    gap:20px;
+  }
+  
+  .playerBox {
+    width: 100%; /* Full width of the container */
+    text-align: center; /* Center-align the text */
+  }
