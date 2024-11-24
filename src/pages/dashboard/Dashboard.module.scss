@@ -1,4 +1,4 @@
-$primary-color: #bb86fc;
+$primary-color: #e81b1b;
 $background-color: #121212;
 $text-color: #ffffff;
 $error-color: #cf6679;
@@ -11,14 +11,16 @@ $error-color: #cf6679;
   .title {
     font-size: 2.5rem;
     margin-bottom: 1rem;
-    color: $primary-color;
+    color: $text-color; /* Ensure the title uses the correct color */
   }
-}
 
-.statsSection,
-.recentMatchesSection,
-.upcomingEventsSection {
-  margin-top: 30px;
+  .statstext {
+    font-size: 1.5rem;
+    color: $text-color; /* Explicitly set the text color */
+    font-weight: bold; /* Make text bold */
+    text-decoration: underline; /* Add underline */
+    text-underline-offset: 0.3rem; /* Adjust underline distance */
+  }
 }
 
 .statsBox,
@@ -34,7 +36,7 @@ $error-color: #cf6679;
   p {
     margin: 5px 0;
     font-size: 1.1rem;
-    color: $text-color;
+    color: $text-color; /* Ensure all text uses the correct color */
   }
 }
 
@@ -62,4 +64,44 @@ $error-color: #cf6679;
     outline: none;
     box-shadow: 0 0 5px $primary-color;
   }
+}
+
+.dashboard {
+  display: grid;
+  grid-template-columns: 1fr 1fr; /* Two equal parts */
+  gap: 20px;
+  padding: 20px;
+  color: $text-color; /* Ensure all text within the dashboard uses the correct color */
+}
+
+.leftSection {
+  background-color: rgba(255, 255, 255, 0.1);
+  padding: 15px;
+  border-radius: 10px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+}
+
+.rightSection {
+  background-color: rgba(255, 255, 255, 0.1);
+  padding: 15px;
+  border-radius: 10px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+}
+
+.statstext {
+  font-size: 2.5rem;
+  font-weight: bold;
+  text-decoration: underline;
+  text-underline-offset: 0.3rem;
+  color: $text-color; /* Ensure the correct text color */
+}
+
+.messageBox {
+  margin-top: 20px;
+  padding: 15px;
+  background-color: rgba(0, 0, 0, 0.5);
+  border-radius: 10px;
+  color: $text-color; /* Use the correct text color */
+  font-size: 1.2rem;
+  text-align: center;
 }

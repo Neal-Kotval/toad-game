@@ -77,42 +77,53 @@ export default function UserDashboard() {
   return (
     <div>
       <Navbar />
-      <div className={styles.container}>
-        <button onClick={handleSignOut} className={styles.signOutButton}>
-          Log Out
-        </button>
-        <title>User Dashboard</title>
-        <h1 className={styles.title}>
-          Welcome Back, {userData?.username || "Player"}!
-        </h1>
-        <p>Here's a quick overview of your progress and activity.</p>
+      <div className={styles.dashboard}>
+        {/* Left Section: Stats */}
+        <div className={styles.leftSection}>
 
         <div className={styles.statsSection}>
-          <h2>Your Stats</h2>
-          {userData ? (
-            <div className={styles.statsBox}>
-              <p>&#2022; Gold Collected: {userData.score || 0}</p>
-              <p>&#2022; Current Rank: {currentRank || "Unranked"}</p>
-            </div>
-          ) : (
-            <p>Loading stats...</p>
-          )}
-        </div>
-
-        <div className={styles.recentMatchesSection}>
-          <h2>Recent Matches</h2>
-          <div className={styles.recentMatchesBox}>
-            <p>&#2022; Win vs. Player123 (+50 Gold)</p>
-            <p>&#2022; Loss to Player456 (-30 Gold)</p>
-            <p>&#2022; Win vs. Player789 (+100 Gold)</p>
+        <h2 className={styles.statstext}>
+          {userData?.username
+            ? `${userData.username}'s Stats`
+            : "Your Stats"}
+        </h2>
+        {userData ? (
+          <div className={styles.statsBox}>
+            <p>&#2022; Gold Collected: {userData.score || 0}</p>
+            <p>&#2022; Current Rank: {currentRank || "Unranked"}</p>
           </div>
+        ) : (
+          <p>Loading stats...</p>
+        )}
+      </div>
+
+          <div className={styles.recentMatchesSection}>
+            <h2 className={styles.statstext}>Recent Matches</h2>
+            <div className={styles.recentMatchesBox}>
+              <p>&#2022; Win vs. Player123 (+50 Gold)</p>
+              <p>&#2022; Loss to Player456 (-30 Gold)</p>
+              <p>&#2022; Win vs. Player789 (+100 Gold)</p>
+            </div>
+          </div>
+
+          <div className={styles.upcomingEventsSection}>
+            <h2 className={styles.statstext}>Upcoming Events</h2>
+            <div className={styles.upcomingEventsBox}>
+              <p>&#2022; Weekly Tournament: Starts Monday</p>
+              <p>&#2022; Gold Rush Challenge: Ongoing</p>
+            </div>
+          </div>
+
+          <button onClick={handleSignOut} className={styles.signOutButton}>
+            Log Out
+          </button>
         </div>
 
-        <div className={styles.upcomingEventsSection}>
-          <h2>Upcoming Events</h2>
-          <div className={styles.upcomingEventsBox}>
-            <p>&#2022; Weekly Tournament: Starts Monday</p>
-            <p>&#2022; Gold Rush Challenge: Ongoing</p>
+        {/* Right Section: Messages */}
+        <div className={styles.rightSection}>
+          <h2 className={styles.statstext}>Messages</h2>
+          <div className={styles.messageBox}>
+            <p>No messages yet! Stay tuned for player updates.</p>
           </div>
         </div>
       </div>
