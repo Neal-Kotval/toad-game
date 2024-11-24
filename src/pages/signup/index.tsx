@@ -5,6 +5,20 @@ import { auth } from "../../firebase/config";
 import { db } from "../../firebase/config"; // Import Firestore
 import { doc, setDoc } from "firebase/firestore"; // Firestore methods
 import Navbar from "../../components/Navbar/Navbar";
+import { v4 as uuidv4 } from 'uuid';
+import {
+    onSnapshot,
+    updateDoc,
+    deleteDoc,
+    collection,
+    serverTimestamp,
+    getDocs,
+    query,
+    where,
+    orderBy,
+    limit,
+  } from 'firebase/firestore';
+  import { useRouter } from "next/router";
 
 const SignUpPage: React.FC = () => {
   const [email, setEmail] = useState("");
@@ -12,6 +26,28 @@ const SignUpPage: React.FC = () => {
   const [username, setUsername] = useState(""); // New state for username
   const [createUserWithEmailAndPassword, user, loading, error] =
     useCreateUserWithEmailAndPassword(auth);
+  const collectionRef = collection(db, 'users')
+  const router = useRouter();
+
+  async function addUser() {
+
+    const newUser = {
+      username,
+      email,
+      score: 300,
+      id: uuidv4(),
+      createdAt: serverTimestamp(),
+      lastUpdate: serverTimestamp(),
+    };
+
+    try {
+      const userRef = doc(collectionRef, newUser.id);
+      await setDoc(userRef, newUser);
+      router.push("/");
+    } catch (error) {
+      console.error(error);
+    }
+  }
 
   const handleSignUp = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault(); // Prevent the page from reloading
@@ -19,11 +55,7 @@ const SignUpPage: React.FC = () => {
       const res = await createUserWithEmailAndPassword(email, password);
       if (res && res.user) {
         // Store additional user information in Firestore
-        await setDoc(doc(db, "users", res.user.uid), {
-          username,
-          email,
-        });
-        console.log("User document created in Firestore");
+        addUser()
       }
       setEmail("");
       setPassword("");
