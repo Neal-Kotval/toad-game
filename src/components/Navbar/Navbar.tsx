@@ -58,12 +58,12 @@ const Navbar: React.FC = () => {
           {links.map((link) => (
             <li key={link.url}>
               {link.text === 'Log In' ? (
-                <button
-                  className={styles.loginButton}
-                  onClick={() => signIn()}
-                >
-                  {link.text}
-                </button>
+                // Replace `signIn()` with a simple Link
+                <Link href={link.url}>
+                  <button className={styles.loginButton}>
+                    {link.text}
+                  </button>
+                </Link>
               ) : (
                 <Link href={link.url}>{link.text}</Link>
               )}
