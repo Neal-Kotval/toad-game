@@ -15,3 +15,11 @@ body {
   background-attachment: fixed;
   /* Add any other styles for the body element here */
 }
+
+body,
+html {
+  margin: 0;
+  padding: 0;
+  width: 100%; /* Ensure the body and html take full width */
+  overflow-x: hidden; /* Prevent horizontal overflow */
+}

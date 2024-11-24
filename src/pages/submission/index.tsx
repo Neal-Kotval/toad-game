@@ -9,12 +9,8 @@ import { useEffect, useState } from "react";
 import {
   collection,
   setDoc,
-  getDocs,
   query,
-  where,
-  orderBy,
-  limit,
-  onSnapshot,
+  getDocs,
   doc,
 } from "firebase/firestore";
 import { v4 as uuidv4 } from "uuid";
@@ -24,6 +20,7 @@ export default function SubmissionPage() {
   const [userData, setUserData] = useState(null); // Current user's data
   const [searchQuery, setSearchQuery] = useState(""); // Search bar query
   const [searchResults, setSearchResults] = useState([]); // Searched users
+  const [feedbackMessage, setFeedbackMessage] = useState(null); // Feedback message
   const router = useRouter();
 
   useEffect(() => {
@@ -39,12 +36,15 @@ export default function SubmissionPage() {
 
       try {
         const usersRef = collection(db, "users");
-        const q = query(usersRef, where("email", "==", user.email));
+        const q = query(usersRef);
         const snapshot = await getDocs(q);
 
         if (!snapshot.empty) {
-          const currentUserData = snapshot.docs[0];
-          setUserData({ id: currentUserData.id, ...currentUserData.data() });
+          const currentUserData = snapshot.docs
+            .map((doc) => ({ id: doc.id, ...doc.data() }))
+            .find((doc) => doc.email === user.email);
+
+          setUserData(currentUserData);
         }
       } catch (error) {
         console.error("Error fetching user data:", error);
@@ -54,33 +54,36 @@ export default function SubmissionPage() {
     fetchUserData();
   }, [user]);
 
-  // Dynamic search for users
+  // Fetch all users and filter for closest matches locally
   useEffect(() => {
-    if (!searchQuery) {
-      setSearchResults([]);
-      return;
-    }
+    const fetchAndFilterUsers = async () => {
+      if (!searchQuery) {
+        setSearchResults([]);
+        return;
+      }
 
-    const usersRef = collection(db, "users");
-    const q = query(
-      usersRef,
-      where("username", ">=", searchQuery),
-      where("username", "<=", searchQuery + "\uf8ff"),
-      orderBy("username"),
-      limit(5) // Limit to top 5 results
-    );
+      const lowerSearchQuery = searchQuery.toLowerCase();
 
-    const unsubscribe = onSnapshot(q, (snapshot) => {
-      const results = [];
-      snapshot.forEach((doc) => {
-        if (doc.data().username !== userData?.username) {
-          results.push({ id: doc.id, ...doc.data() });
-        }
-      });
-      setSearchResults(results);
-    });
+      try {
+        const usersRef = collection(db, "users");
+        const snapshot = await getDocs(usersRef);
 
-    return () => unsubscribe();
+        const allUsers = snapshot.docs
+          .map((doc) => ({ id: doc.id, ...doc.data() }))
+          .filter(
+            (doc) =>
+              doc.username.toLowerCase().includes(lowerSearchQuery) &&
+              doc.username !== userData?.username
+          )
+          .slice(0, 5); // Limit to top 5 results
+
+        setSearchResults(allUsers);
+      } catch (error) {
+        console.error("Error fetching or filtering users:", error);
+      }
+    };
+
+    fetchAndFilterUsers();
   }, [searchQuery, userData]);
 
   const logBattle = async (opponent, isWin) => {
@@ -102,6 +105,10 @@ export default function SubmissionPage() {
       const battlesRef = collection(db, "battles");
       await setDoc(doc(battlesRef, battleId), battle); // Use setDoc with the specified ID
       console.log("Battle logged:", battle);
+
+      // Show feedback message
+      setFeedbackMessage("Battle logged!");
+      setTimeout(() => setFeedbackMessage(null), 3000); // Clear message after 3 seconds
     } catch (error) {
       console.error("Error logging battle:", error);
     }
@@ -145,6 +152,9 @@ export default function SubmissionPage() {
               <p>No players found.</p>
             )}
           </div>
+          {feedbackMessage && (
+            <div className={styles.feedbackMessage}>{feedbackMessage}</div>
+          )}
         </div>
       </div>
     </div>

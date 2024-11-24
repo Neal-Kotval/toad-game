@@ -1,6 +1,6 @@
 $background-color: #121212;
 $foreground-color: #1e1e1e;
-$primary-color: #bb86fc;
+$primary-color: #006b52;
 $text-color: #ffffff;
 $error-color: #cf6679;
 $success-color: #03dac6;
@@ -10,7 +10,6 @@ $success-color: #03dac6;
   justify-content: center;
   align-items: center;
   height: 100vh;
-  background-color: $background-color;
   padding-top: 60px; /* To avoid overlapping with the Navbar */
 }
 
@@ -121,7 +120,7 @@ $success-color: #03dac6;
       outline: none;
   
       &:focus {
-        border-color: #bb86fc;
+        border-color: $primary-color;
       }
     }
   }

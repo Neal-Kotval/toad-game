@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import styles from "./login.module.scss";
 import Navbar from "../../components/Navbar/Navbar"; // Import Navbar
 import { useSignInWithEmailAndPassword } from "react-firebase-hooks/auth";
@@ -16,19 +16,21 @@ const LoginPage: React.FC = () => {
   const [showSuccess, setShowSuccess] = useState(false);
   const router = useRouter();
 
-  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault(); // Prevent the page from reloading
-    try {
-      const res = await signInWithEmailAndPassword(email, password);
-      console.log("Login successful:", res);
-      setEmail("");
-      setPassword("");
+  useEffect(() => {
+    if (user && !error) {
+      // Redirect only when login is successful
       setShowSuccess(true);
-
-      // Redirect to home after a short delay
       setTimeout(() => {
         router.push("/");
-      }, 2000); // 2-second delay
+      }, 500); // 2-second delay
+    }
+  }, [user, error, router]);
+
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault(); // Prevent the page from reloading
+    setShowSuccess(false); // Reset success message
+    try {
+      await signInWithEmailAndPassword(email, password);
     } catch (e) {
       console.error("Error during login:", e);
     }
@@ -72,9 +74,9 @@ const LoginPage: React.FC = () => {
             </button>
           </form>
           {showSuccess && (
-            <p className={styles.successMessage}>Login successful! Redirecting...</p>
+            <p className={styles.successMessage}>Login successful!</p>
           )}
-          {error && <p className={styles.errorMessage}>{error.message}</p>}
+          {error && <p className={styles.errorMessage}>Incorrect Email or Password</p>}
           <div className={styles.signupSection}>
             <p>Don't have an account?</p>
             <button

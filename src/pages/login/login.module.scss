@@ -1,6 +1,6 @@
 $background-color: #121212;
 $foreground-color: #1e1e1e;
-$primary-color: #bb86fc;
+$primary-color: #006b52;
 $text-color: #ffffff;
 $error-color: #cf6679;
 $success-color: #03dac6;
@@ -10,7 +10,7 @@ $success-color: #03dac6;
   justify-content: center;
   align-items: center;
   height: 100vh;
-  background-color: $background-color;
+  
   padding-top: 60px; /* Avoid overlapping with Navbar */
 }
 
@@ -69,7 +69,7 @@ $success-color: #03dac6;
 }
 
 .submitButton {
-  background-color: $primary-color;
+  background-color: $primary-color!important;
   color: $text-color;
   padding: 0.75rem;
   font-size: 1rem;
@@ -80,11 +80,11 @@ $success-color: #03dac6;
   transition: background-color 0.3s ease;
 
   &:hover {
-    background-color: darken($primary-color, 10%);
+    background-color: darken($primary-color, 10%)!important;
   }
 
   &:active {
-    background-color: darken($primary-color, 20%);
+    background-color: darken($primary-color, 20%)!important;
   }
 }
 

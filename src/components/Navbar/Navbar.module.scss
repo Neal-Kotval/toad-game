@@ -1,5 +1,7 @@
 @import "../../styles/variables.scss";
 
+/* Add this to prevent issues with body or parent element padding/margin */
+
 .nav_box {
   background-color: black;
   color: white;

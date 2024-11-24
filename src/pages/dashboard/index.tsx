@@ -48,7 +48,10 @@ export default function UserDashboard() {
         const userIndex = allUsers.findIndex((u) => u.email === user.email);
         if (userIndex !== -1) {
           setUserData(allUsers[userIndex]);
-          setCurrentRank(userIndex + 1);
+          const rank =
+            allUsers.filter((u) => u.score > allUsers[userIndex].score).length +
+            1;
+          setCurrentRank(rank);
         }
       } catch (e) {
         console.error("Error fetching user data:", e);
@@ -84,28 +87,28 @@ export default function UserDashboard() {
   // Resolve a battle
   const resolveBattle = async (battle, isAccepted) => {
     const { winner_id, loser_id, id: battleId } = battle;
-  
+
     try {
       if (isAccepted) {
         // Fetch winner and loser user documents dynamically
         const winnerRef = doc(db, "users", winner_id);
         const loserRef = doc(db, "users", loser_id);
-  
+
         const winnerSnap = await getDoc(winnerRef);
         const loserSnap = await getDoc(loserRef);
-  
+
         if (winnerSnap.exists() && loserSnap.exists()) {
           const winnerData = winnerSnap.data();
           const loserData = loserSnap.data();
-  
+
           // Update scores
           await updateDoc(winnerRef, { score: (winnerData.score || 0) + 100 });
           await updateDoc(loserRef, { score: (loserData.score || 0) - 100 });
-  
+
           // Mark battle as resolved
           const battleRef = doc(db, "battles", battleId);
           await updateDoc(battleRef, { pending: false });
-  
+
           console.log("Battle accepted and resolved.");
         } else {
           console.error("Winner or loser document does not exist.");
@@ -114,10 +117,10 @@ export default function UserDashboard() {
         // Delete the battle from the database
         const battleRef = doc(db, "battles", battleId);
         await deleteDoc(battleRef);
-  
+
         console.log("Battle rejected and deleted.");
       }
-  
+
       // Update local state
       setAllBattles((prev) =>
         isAccepted
@@ -128,7 +131,6 @@ export default function UserDashboard() {
       console.error("Error resolving battle:", e);
     }
   };
-  
 
   const handleSignOut = async () => {
     try {
@@ -152,7 +154,7 @@ export default function UserDashboard() {
         !battle.pending &&
         (battle.winner === userData?.username || battle.loser === userData?.username)
     )
-    .slice(0, 5); // Get the last 5 recent battles
+    .slice(0, 5);
 
   if (loadingAuth || loadingData) {
     return <p>Loading...</p>;
@@ -166,7 +168,6 @@ export default function UserDashboard() {
     <div>
       <Navbar />
       <div className={styles.dashboard}>
-        {/* Left Section: Stats */}
         <div className={styles.leftSection}>
           <div className={styles.statsSection}>
             <h2 className={styles.statstext}>
@@ -206,7 +207,6 @@ export default function UserDashboard() {
           </button>
         </div>
 
-        {/* Right Section: Messages */}
         <div className={styles.rightSection}>
           <h2 className={styles.statstext}>Messages</h2>
           <div className={styles.messageBox}>
