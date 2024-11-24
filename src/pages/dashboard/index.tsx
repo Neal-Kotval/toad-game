@@ -16,12 +16,30 @@ import {
   doc,
 } from "firebase/firestore";
 
+// Define types for User and Battle
+type User = {
+  id: string;
+  username: string;
+  email: string;
+  score: number;
+};
+
+type Battle = {
+  id: string;
+  winner: string;
+  loser: string;
+  winner_id: string;
+  loser_id: string;
+  reporter_id: string;
+  pending: boolean;
+};
+
 export default function UserDashboard() {
   const [user, loadingAuth, errorAuth] = useAuthState(auth);
-  const [userData, setUserData] = useState(null);
-  const [currentRank, setCurrentRank] = useState(null);
+  const [userData, setUserData] = useState<User | null>(null);
+  const [currentRank, setCurrentRank] = useState<number | null>(null);
   const [loadingData, setLoadingData] = useState(false);
-  const [allBattles, setAllBattles] = useState([]);
+  const [allBattles, setAllBattles] = useState<Battle[]>([]);
   const router = useRouter();
 
   useEffect(() => {
@@ -40,10 +58,9 @@ export default function UserDashboard() {
         const usersCollectionRef = collection(db, "users");
         const querySnapshot = await getDocs(usersCollectionRef);
 
-        
-        const allUsers = [];
+        const allUsers: User[] = [];
         querySnapshot.forEach((doc) => {
-          allUsers.push({ id: doc.id, ...doc.data() });
+          allUsers.push({ id: doc.id, ...doc.data() } as User);
         });
 
         const userIndex = allUsers.findIndex((u) => u.email === user.email);
@@ -71,9 +88,9 @@ export default function UserDashboard() {
         const battlesRef = collection(db, "battles");
         const querySnapshot = await getDocs(battlesRef);
 
-        const battles = [];
+        const battles: Battle[] = [];
         querySnapshot.forEach((doc) => {
-          battles.push({ id: doc.id, ...doc.data() });
+          battles.push({ id: doc.id, ...doc.data() } as Battle);
         });
 
         setAllBattles(battles);
@@ -86,12 +103,11 @@ export default function UserDashboard() {
   }, []);
 
   // Resolve a battle
-  const resolveBattle = async (battle, isAccepted) => {
+  const resolveBattle = async (battle: Battle, isAccepted: boolean) => {
     const { winner_id, loser_id, id: battleId } = battle;
 
     try {
       if (isAccepted) {
-        // Fetch winner and loser user documents dynamically
         const winnerRef = doc(db, "users", winner_id);
         const loserRef = doc(db, "users", loser_id);
 
@@ -99,14 +115,12 @@ export default function UserDashboard() {
         const loserSnap = await getDoc(loserRef);
 
         if (winnerSnap.exists() && loserSnap.exists()) {
-          const winnerData = winnerSnap.data();
-          const loserData = loserSnap.data();
+          const winnerData = winnerSnap.data() as User;
+          const loserData = loserSnap.data() as User;
 
-          // Update scores
           await updateDoc(winnerRef, { score: (winnerData.score || 0) + 100 });
           await updateDoc(loserRef, { score: (loserData.score || 0) - 100 });
 
-          // Mark battle as resolved
           const battleRef = doc(db, "battles", battleId);
           await updateDoc(battleRef, { pending: false });
 
@@ -115,14 +129,12 @@ export default function UserDashboard() {
           console.error("Winner or loser document does not exist.");
         }
       } else {
-        // Delete the battle from the database
         const battleRef = doc(db, "battles", battleId);
         await deleteDoc(battleRef);
 
         console.log("Battle rejected and deleted.");
       }
 
-      // Update local state
       setAllBattles((prev) =>
         isAccepted
           ? prev.map((b) => (b.id === battleId ? { ...b, pending: false } : b))
