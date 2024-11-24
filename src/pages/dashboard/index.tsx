@@ -40,6 +40,7 @@ export default function UserDashboard() {
         const usersCollectionRef = collection(db, "users");
         const querySnapshot = await getDocs(usersCollectionRef);
 
+        
         const allUsers = [];
         querySnapshot.forEach((doc) => {
           allUsers.push({ id: doc.id, ...doc.data() });

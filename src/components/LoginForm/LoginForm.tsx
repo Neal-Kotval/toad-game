@@ -4,7 +4,7 @@ import React, { useState } from 'react';
 import styles from './LoginForm.module.scss';
 
 const LoginForm = () => {
-  const handleSubmit = (e) => {
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     console.log("EEEEE")
     // Handle login logic here (e.g., send login data to the server)

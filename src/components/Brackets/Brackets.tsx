@@ -1,27 +1,32 @@
 import styles from "./Brackets.module.scss";
 import PlayerBox from "../PlayerBox/PlayerBox";
 
-import React, { useState, useEffect } from 'react';
-import { collection, onSnapshot } from "firebase/firestore"; // Firestore methods
+import React, { useState, useEffect } from "react";
+import { collection, onSnapshot, DocumentData } from "firebase/firestore"; // Firestore methods
 import { db } from "../../firebase/config"; // Import Firestore
-import Navbar from "../../components/Navbar/Navbar";
 
-// Import the JSON data (replace './sampleData.json' with your actual JSON file path)
-import playerData from "../../../test.json";
+interface Player {
+  id: string;
+  username: string;
+  score: number;
+}
 
-const Brackets = () => {
-  const collectionRef = collection(db, 'users');
-  const [players, setPlayers] = useState([]);
+const Brackets: React.FC = () => {
+  const collectionRef = collection(db, "users");
+  const [players, setPlayers] = useState<Player[]>([]);
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
-    const q = collectionRef;
-
     setLoading(true);
-    const unsub = onSnapshot(q, (querySnapshot) => {
-      const items = [];
+    const unsub = onSnapshot(collectionRef, (querySnapshot) => {
+      const items: Player[] = [];
       querySnapshot.forEach((doc) => {
-        items.push(doc.data());
+        const data = doc.data();
+        items.push({
+          id: doc.id,
+          username: data.username || "Unknown",
+          score: data.score || 0,
+        });
       });
       setPlayers(items);
       setLoading(false);
@@ -42,8 +47,8 @@ const Brackets = () => {
         {loading ? (
           <p>Loading...</p>
         ) : (
-          sortedPlayers.map((player, index) => (
-            <div key={index} className={styles.playerBox}>
+          sortedPlayers.map((player) => (
+            <div key={player.id} className={styles.playerBox}>
               <PlayerBox name={player.username} score={player.score} />
             </div>
           ))

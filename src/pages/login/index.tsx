@@ -78,7 +78,7 @@ const LoginPage: React.FC = () => {
           )}
           {error && <p className={styles.errorMessage}>Incorrect Email or Password</p>}
           <div className={styles.signupSection}>
-            <p>Don't have an account?</p>
+            <p>Don&apos;t have an account?</p>
             <button
               type="button"
               className={styles.signUpButton}
