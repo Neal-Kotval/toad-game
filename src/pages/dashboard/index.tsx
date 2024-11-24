@@ -1,16 +1,51 @@
+'use client';
 import styles from "./Dashboard.module.scss";
 import "../../styles/globals.scss";
 import Navbar from "../../components/Navbar/Navbar";
+import { useAuthState } from "react-firebase-hooks/auth";
+import { auth } from "../../firebase/config";
+import { useRouter } from "next/router";
+import { signOut } from "firebase/auth";
+import { useEffect } from "react";
 
 export default function UserDashboard() {
+  const [user, loading, error] = useAuthState(auth); // Destructure to access user, loading, and error states
+  const router = useRouter();
+
+  useEffect(() => {
+    if (!loading && !user) {
+      router.push("/login");
+    }
+  }, [loading, user, router]);
+
+  const handleSignOut = async () => {
+    try {
+      await signOut(auth);
+      console.log("User signed out successfully");
+      router.push("/login");
+    } catch (e) {
+      console.error("Error signing out:", e);
+    }
+  };
+
+  if (loading) {
+    return <p>Loading...</p>; // Show a loading message while checking the auth state
+  }
+
+  if (error) {
+    return <p>Error: {error.message}</p>; // Handle and display any auth errors
+  }
+
   return (
     <div>
       <Navbar />
       <div className={styles.container}>
+        <button onClick={handleSignOut} className={styles.signOutButton}>
+          Log Out
+        </button>
         <title>User Dashboard</title>
         <h1>Welcome Back, Player!</h1>
         <p>Here's a quick overview of your progress and activity.</p>
-        <img src="/dashboard-icon.png" alt="Dashboard Icon" />
 
         <div className={styles.statsSection}>
           <h2>Your Stats</h2>

@@ -99,3 +99,30 @@ $success-color: #03dac6;
   color: $success-color;
   font-size: 0.875rem;
 }
+
+.inputGroup {
+    margin-bottom: 15px;
+  
+    label {
+      font-size: 1rem;
+      color: #ffffff;
+      margin-bottom: 5px;
+      display: block;
+    }
+  
+    input {
+      width: 100%;
+      padding: 10px;
+      border: 1px solid #333333;
+      border-radius: 5px;
+      background-color: #121212;
+      color: #ffffff;
+      font-size: 1rem;
+      outline: none;
+  
+      &:focus {
+        border-color: #bb86fc;
+      }
+    }
+  }
+  
