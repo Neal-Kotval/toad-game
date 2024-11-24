@@ -105,3 +105,39 @@ $error-color: #cf6679;
   font-size: 1.2rem;
   text-align: center;
 }
+
+.battleItem {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin: 10px 0;
+  padding: 10px;
+  background-color: rgba(255, 255, 255, 0.1);
+  border-radius: 5px;
+}
+
+.acceptButton {
+  background-color: #4caf50;
+  color: white;
+  border: none;
+  padding: 5px 10px;
+  border-radius: 5px;
+  cursor: pointer;
+
+  &:hover {
+    background-color: #45a049;
+  }
+}
+
+.rejectButton {
+  background-color: #f44336;
+  color: white;
+  border: none;
+  padding: 5px 10px;
+  border-radius: 5px;
+  cursor: pointer;
+
+  &:hover {
+    background-color: #e53935;
+  }
+}

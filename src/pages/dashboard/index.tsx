@@ -7,44 +7,48 @@ import { auth, db } from "../../firebase/config";
 import { useRouter } from "next/router";
 import { signOut } from "firebase/auth";
 import { useEffect, useState } from "react";
-import { collection, getDocs, query, orderBy } from "firebase/firestore";
+import {
+  collection,
+  getDocs,
+  updateDoc,
+  deleteDoc,
+  getDoc,
+  doc,
+} from "firebase/firestore";
 
 export default function UserDashboard() {
-  const [user, loadingAuth, errorAuth] = useAuthState(auth); // Auth state
-  const [userData, setUserData] = useState(null); // State for Firestore user data
-  const [currentRank, setCurrentRank] = useState(null); // State for rank
-  const [loadingData, setLoadingData] = useState(false); // Loading state for Firestore data
+  const [user, loadingAuth, errorAuth] = useAuthState(auth);
+  const [userData, setUserData] = useState(null);
+  const [currentRank, setCurrentRank] = useState(null);
+  const [loadingData, setLoadingData] = useState(false);
+  const [allBattles, setAllBattles] = useState([]);
   const router = useRouter();
 
-  // Redirect to login if user is not authenticated
   useEffect(() => {
     if (!loadingAuth && !user) {
       router.push("/login");
     }
   }, [loadingAuth, user, router]);
 
+  // Fetch user data and rank
   useEffect(() => {
-    if (!user) return; // Ensure user is authenticated before fetching data
+    if (!user) return;
 
     const fetchUserData = async () => {
       setLoadingData(true);
       try {
         const usersCollectionRef = collection(db, "users");
-        const q = query(usersCollectionRef, orderBy("score", "desc")); // Query to fetch all users sorted by score
-        const querySnapshot = await getDocs(q);
+        const querySnapshot = await getDocs(usersCollectionRef);
 
         const allUsers = [];
         querySnapshot.forEach((doc) => {
           allUsers.push({ id: doc.id, ...doc.data() });
         });
 
-        // Find the logged-in user and their rank
         const userIndex = allUsers.findIndex((u) => u.email === user.email);
         if (userIndex !== -1) {
           setUserData(allUsers[userIndex]);
-          setCurrentRank(userIndex + 1); // Rank is index + 1
-        } else {
-          console.error("User not found in the database");
+          setCurrentRank(userIndex + 1);
         }
       } catch (e) {
         console.error("Error fetching user data:", e);
@@ -56,22 +60,106 @@ export default function UserDashboard() {
     fetchUserData();
   }, [user]);
 
+  // Fetch all battles
+  useEffect(() => {
+    const fetchAllBattles = async () => {
+      try {
+        const battlesRef = collection(db, "battles");
+        const querySnapshot = await getDocs(battlesRef);
+
+        const battles = [];
+        querySnapshot.forEach((doc) => {
+          battles.push({ id: doc.id, ...doc.data() });
+        });
+
+        setAllBattles(battles);
+      } catch (e) {
+        console.error("Error fetching battles:", e);
+      }
+    };
+
+    fetchAllBattles();
+  }, []);
+
+  // Resolve a battle
+  const resolveBattle = async (battle, isAccepted) => {
+    const { winner_id, loser_id, id: battleId } = battle;
+  
+    try {
+      if (isAccepted) {
+        // Fetch winner and loser user documents dynamically
+        const winnerRef = doc(db, "users", winner_id);
+        const loserRef = doc(db, "users", loser_id);
+  
+        const winnerSnap = await getDoc(winnerRef);
+        const loserSnap = await getDoc(loserRef);
+  
+        if (winnerSnap.exists() && loserSnap.exists()) {
+          const winnerData = winnerSnap.data();
+          const loserData = loserSnap.data();
+  
+          // Update scores
+          await updateDoc(winnerRef, { score: (winnerData.score || 0) + 100 });
+          await updateDoc(loserRef, { score: (loserData.score || 0) - 100 });
+  
+          // Mark battle as resolved
+          const battleRef = doc(db, "battles", battleId);
+          await updateDoc(battleRef, { pending: false });
+  
+          console.log("Battle accepted and resolved.");
+        } else {
+          console.error("Winner or loser document does not exist.");
+        }
+      } else {
+        // Delete the battle from the database
+        const battleRef = doc(db, "battles", battleId);
+        await deleteDoc(battleRef);
+  
+        console.log("Battle rejected and deleted.");
+      }
+  
+      // Update local state
+      setAllBattles((prev) =>
+        isAccepted
+          ? prev.map((b) => (b.id === battleId ? { ...b, pending: false } : b))
+          : prev.filter((b) => b.id !== battleId)
+      );
+    } catch (e) {
+      console.error("Error resolving battle:", e);
+    }
+  };
+  
+
   const handleSignOut = async () => {
     try {
       await signOut(auth);
-      console.log("User signed out successfully");
       router.push("/login");
     } catch (e) {
       console.error("Error signing out:", e);
     }
   };
 
+  const pendingBattles = allBattles.filter(
+    (battle) =>
+      battle.pending &&
+      (battle.winner === userData?.username || battle.loser === userData?.username) &&
+      battle.reporter_id !== userData?.id
+  );
+
+  const recentBattles = allBattles
+    .filter(
+      (battle) =>
+        !battle.pending &&
+        (battle.winner === userData?.username || battle.loser === userData?.username)
+    )
+    .slice(0, 5); // Get the last 5 recent battles
+
   if (loadingAuth || loadingData) {
-    return <p>Loading...</p>; // Show loading message
+    return <p>Loading...</p>;
   }
 
   if (errorAuth) {
-    return <p>Error: {errorAuth.message}</p>; // Show authentication error message
+    return <p>Error: {errorAuth.message}</p>;
   }
 
   return (
@@ -80,37 +168,36 @@ export default function UserDashboard() {
       <div className={styles.dashboard}>
         {/* Left Section: Stats */}
         <div className={styles.leftSection}>
-
-        <div className={styles.statsSection}>
-        <h2 className={styles.statstext}>
-          {userData?.username
-            ? `${userData.username}'s Stats`
-            : "Your Stats"}
-        </h2>
-        {userData ? (
-          <div className={styles.statsBox}>
-            <p>&#2022; Gold Collected: {userData.score || 0}</p>
-            <p>&#2022; Current Rank: {currentRank || "Unranked"}</p>
+          <div className={styles.statsSection}>
+            <h2 className={styles.statstext}>
+              {userData?.username
+                ? `${userData.username}'s Stats`
+                : "Your Stats"}
+            </h2>
+            {userData ? (
+              <div className={styles.statsBox}>
+                <p>&#2022; Gold Collected: {userData.score || 0}</p>
+                <p>&#2022; Current Rank: {currentRank || "Unranked"}</p>
+              </div>
+            ) : (
+              <p>Loading stats...</p>
+            )}
           </div>
-        ) : (
-          <p>Loading stats...</p>
-        )}
-      </div>
 
           <div className={styles.recentMatchesSection}>
             <h2 className={styles.statstext}>Recent Matches</h2>
             <div className={styles.recentMatchesBox}>
-              <p>&#2022; Win vs. Player123 (+50 Gold)</p>
-              <p>&#2022; Loss to Player456 (-30 Gold)</p>
-              <p>&#2022; Win vs. Player789 (+100 Gold)</p>
-            </div>
-          </div>
-
-          <div className={styles.upcomingEventsSection}>
-            <h2 className={styles.statstext}>Upcoming Events</h2>
-            <div className={styles.upcomingEventsBox}>
-              <p>&#2022; Weekly Tournament: Starts Monday</p>
-              <p>&#2022; Gold Rush Challenge: Ongoing</p>
+              {recentBattles.length > 0 ? (
+                recentBattles.map((battle) => (
+                  <p key={battle.id}>
+                    {battle.winner === userData.username
+                      ? `You beat ${battle.loser}!`
+                      : `${battle.winner} beat you!`}
+                  </p>
+                ))
+              ) : (
+                <p>No recent matches.</p>
+              )}
             </div>
           </div>
 
@@ -123,7 +210,31 @@ export default function UserDashboard() {
         <div className={styles.rightSection}>
           <h2 className={styles.statstext}>Messages</h2>
           <div className={styles.messageBox}>
-            <p>No messages yet! Stay tuned for player updates.</p>
+            {pendingBattles.length > 0 ? (
+              pendingBattles.map((battle) => (
+                <div key={battle.id} className={styles.battleItem}>
+                  <p>
+                    {battle.winner === userData.username
+                      ? `You beat ${battle.loser}!`
+                      : `${battle.winner} beat you!`}
+                  </p>
+                  <button
+                    className={styles.acceptButton}
+                    onClick={() => resolveBattle(battle, true)}
+                  >
+                    ✓
+                  </button>
+                  <button
+                    className={styles.rejectButton}
+                    onClick={() => resolveBattle(battle, false)}
+                  >
+                    ✗
+                  </button>
+                </div>
+              ))
+            ) : (
+              <p>No pending battles.</p>
+            )}
           </div>
         </div>
       </div>

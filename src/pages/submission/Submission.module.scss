@@ -1,0 +1,104 @@
+$primary-color: #e81b1b;
+$background-color: #121212;
+$text-color: #ffffff;
+
+.dashboard {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  height: calc(100vh - 80px); /* Full height minus navbar */
+}
+
+.leftSection {
+  background-color: rgba(255, 255, 255, 0.1);
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+  width: 100%;
+  max-width: 600px;
+  text-align: center;
+}
+
+.title {
+  font-size: 2rem;
+  color: $text-color;
+  margin-bottom: 20px;
+}
+
+.searchContainer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 20px;
+}
+
+.searchBar {
+  flex: 1;
+  padding: 10px;
+  border: 1px solid $text-color;
+  border-radius: 5px;
+  background-color: $background-color;
+  color: $text-color;
+  margin-right: 10px;
+}
+
+.searchButton {
+  padding: 10px 20px;
+  background-color: $primary-color;
+  color: $text-color;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+
+  &:hover {
+    background-color: darken($primary-color, 10%);
+  }
+}
+
+.resultsContainer {
+  margin-top: 20px;
+}
+
+.resultItem {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background-color: rgba(255, 255, 255, 0.1);
+  padding: 10px;
+  border-radius: 5px;
+  margin-bottom: 10px;
+
+  span {
+    flex: 1;
+    color: $text-color;
+  }
+}
+
+.winButton {
+  background-color: green;
+  color: $text-color;
+  padding: 5px 10px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  margin-right: 5px;
+
+  &:hover {
+    background-color: darkgreen;
+  }
+}
+
+.loseButton {
+  background-color: red;
+  color: $text-color;
+  padding: 5px 10px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+
+  &:hover {
+    background-color: darkred;
+  }
+}
