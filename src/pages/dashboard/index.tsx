@@ -92,7 +92,6 @@ export default function UserDashboard() {
           {userData ? (
             <div className={styles.statsBox}>
               <p>&#2022; Gold Collected: {userData.score || 0}</p>
-              <p>&#2022; Matches Played: {userData.matchesPlayed || 0}</p>
               <p>&#2022; Current Rank: {currentRank || "Unranked"}</p>
             </div>
           ) : (

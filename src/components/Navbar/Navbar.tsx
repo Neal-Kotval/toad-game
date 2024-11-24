@@ -1,21 +1,35 @@
-import { useState, useEffect } from 'react';
-import styles from './Navbar.module.scss';
-import Link from 'next/link';
-import { signIn } from 'next-auth/react';
+import { useState, useEffect } from "react";
+import styles from "./Navbar.module.scss";
+import Link from "next/link";
+import { useAuthState } from "react-firebase-hooks/auth";
+import { auth } from "../../firebase/config";
+import { signOut } from "firebase/auth";
+import { useRouter } from "next/router";
 
 const links = [
-  { text: 'Bracket', url: '/bracket' },
-  { text: 'Dashboard', url: '/dashboard' },
-  { text: 'Submission', url: '/submission' },
-  { text: 'Log In', url: '/login' },
+  { text: "Bracket", url: "/bracket" },
+  { text: "Dashboard", url: "/dashboard" },
+  { text: "Submission", url: "/submission" },
 ];
 
 const Navbar: React.FC = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
+  const [user] = useAuthState(auth); // Track logged-in user
+  const router = useRouter();
 
   const toggleMenu = () => {
     setIsOpen(!isOpen);
+  };
+
+  const handleSignOut = async () => {
+    try {
+      await signOut(auth);
+      console.log("User signed out successfully");
+      router.push("/login");
+    } catch (e) {
+      console.error("Error signing out:", e);
+    }
   };
 
   useEffect(() => {
@@ -29,10 +43,10 @@ const Navbar: React.FC = () => {
     };
 
     handleResize(); // Run on initial load
-    window.addEventListener('resize', handleResize);
+    window.addEventListener("resize", handleResize);
 
     return () => {
-      window.removeEventListener('resize', handleResize);
+      window.removeEventListener("resize", handleResize);
     };
   }, []);
 
@@ -57,18 +71,27 @@ const Navbar: React.FC = () => {
         >
           {links.map((link) => (
             <li key={link.url}>
-              {link.text === 'Log In' ? (
-                // Replace `signIn()` with a simple Link
-                <Link href={link.url}>
-                  <button className={styles.loginButton}>
-                    {link.text}
-                  </button>
-                </Link>
-              ) : (
-                <Link href={link.url}>{link.text}</Link>
-              )}
+              <Link href={link.url}>{link.text}</Link>
             </li>
           ))}
+          <li>
+            {user ? (
+              // Log Out Button if the user is logged in
+              <button
+                onClick={handleSignOut}
+                className={styles.loginButton}
+              >
+                Log Out
+              </button>
+            ) : (
+              // Log In Link if the user is not logged in
+              <Link href="/login">
+                <button className={styles.loginButton}>
+                  Log In
+                </button>
+              </Link>
+            )}
+          </li>
         </ul>
       </div>
     </nav>

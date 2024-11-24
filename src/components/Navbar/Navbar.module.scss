@@ -101,16 +101,18 @@
   text-underline-offset: 0.4rem;
   padding: 0.5rem 2rem; /* Match padding of navbar links */
   border-radius: 4px;
-  transition: background-color 0.3s ease;
+  transition: background-color 0.3s ease, box-shadow 0.3s ease;
 
   display: inline-flex; /* Ensures consistent alignment */
   align-items: center; /* Vertically center content */
   line-height: 1; /* Prevent extra spacing from font line-height */
 
-  &:hover {
-    background-color: #555;
-  }
+  /* Remove any default outline or box-shadow */
+  outline: none;
+  box-shadow: none;
+
 }
+
 
 .hamburger {
   display: none; /* Hidden by default on larger screens */
