@@ -1,0 +1,79 @@
+@keyframes hoverUpDown {
+    0% {
+      transform: translateY(0); /* Start position */
+    }
+    50% {
+      transform: translateY(-5px); /* Move the image 5 pixels up at the middle of the animation */
+    }
+    100% {
+      transform: translateY(0); /* Back to the starting position */
+    }
+  }
+  
+  .container {
+    padding: 20px;
+    text-align: center;
+    color: white;
+  
+    img {
+      max-width: 100%;
+      display: block;
+      margin: 20px auto;
+      animation: hoverUpDown 1.5s infinite; /* Apply the animation to the image */
+    }
+  
+    h1 {
+      font-size: 50px;
+      margin-bottom: 10px;
+      font-weight: 800;
+      text-decoration: underline;
+      text-underline-offset: 0.5rem;
+      margin-bottom: 20px;
+      padding-bottom: 20px;
+    }
+  
+    h2 {
+      margin-top: 40px;
+      font-size: 35px;
+      margin-bottom: 10px;
+      font-weight: 800;
+      text-decoration: underline;
+      text-underline-offset: 0.5rem;
+    }
+  
+    p {
+      font-size: 25px;
+      color: #ffffff;
+      font-style: italic;
+    }
+  }
+  
+  .statsSection,
+  .recentMatchesSection,
+  .upcomingEventsSection {
+    margin-top: 30px;
+  }
+  
+  .statsBox,
+  .recentMatchesBox,
+  .upcomingEventsBox {
+    font-size: 25px;
+    margin-top: 10px;
+    text-align: center;
+    align-items: center;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    background-color: rgba(255, 255, 255, 0.1);
+    padding: 15px;
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+    word-wrap: break-word;
+  
+    p {
+      margin: 0;
+      font-size: 20px;
+      color: #ffffff;
+    }
+  }
+  

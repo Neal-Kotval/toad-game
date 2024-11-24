@@ -5,16 +5,16 @@ $text-color: #ffffff;
 $error-color: #cf6679;
 $success-color: #03dac6;
 
-.loginContainer {
+.signupContainer {
   display: flex;
   justify-content: center;
   align-items: center;
   height: 100vh;
   background-color: $background-color;
-  padding-top: 60px; /* Avoid overlapping with Navbar */
+  padding-top: 60px; /* To avoid overlapping with the Navbar */
 }
 
-.loginBox {
+.signupBox {
   background-color: $foreground-color;
   padding: 2.5rem;
   border-radius: 10px;
@@ -88,46 +88,14 @@ $success-color: #03dac6;
   }
 }
 
-.successMessage {
-  margin-top: 1rem;
-  color: $success-color;
-  font-size: 0.875rem;
-}
-
-.errorMessage {
+.error {
   margin-top: 1rem;
   color: $error-color;
   font-size: 0.875rem;
 }
 
-.signupSection {
-  margin-top: 2rem;
-
-  p {
-    margin: 0;
-    color: $text-color;
-    font-size: 1rem;
-  }
-
-  .signUpButton {
-    margin-top: 0.5rem;
-    background-color: transparent;
-    border: 1px solid $primary-color;
-    color: $primary-color;
-    padding: 0.75rem 1rem;
-    border-radius: 5px;
-    font-size: 1rem;
-    font-weight: bold;
-    cursor: pointer;
-    transition: all 0.3s ease;
-
-    &:hover {
-      background-color: $primary-color;
-      color: $text-color;
-    }
-
-    &:active {
-      background-color: darken($primary-color, 20%);
-    }
-  }
+.success {
+  margin-top: 1rem;
+  color: $success-color;
+  font-size: 0.875rem;
 }
