@@ -15,12 +15,29 @@ import {
 } from "firebase/firestore";
 import { v4 as uuidv4 } from "uuid";
 
+type User = {
+  id: string;
+  username: string;
+  email: string;
+};
+
+type Battle = {
+  id: string;
+  winner: string;
+  loser: string;
+  winner_id: string;
+  loser_id: string;
+  reporter_id: string;
+  pending: boolean;
+  createdAt: string;
+};
+
 export default function SubmissionPage() {
   const [user, loadingAuth] = useAuthState(auth);
-  const [userData, setUserData] = useState(null); // Current user's data
+  const [userData, setUserData] = useState<User | null>(null); // Current user's data
   const [searchQuery, setSearchQuery] = useState(""); // Search bar query
-  const [searchResults, setSearchResults] = useState([]); // Searched users
-  const [feedbackMessage, setFeedbackMessage] = useState(null); // Feedback message
+  const [searchResults, setSearchResults] = useState<User[]>([]); // Searched users
+  const [feedbackMessage, setFeedbackMessage] = useState<string | null>(null); // Feedback message
   const router = useRouter();
 
   useEffect(() => {
@@ -36,15 +53,15 @@ export default function SubmissionPage() {
 
       try {
         const usersRef = collection(db, "users");
-        const q = query(usersRef);
-        const snapshot = await getDocs(q);
+        const snapshot = await getDocs(usersRef);
 
         if (!snapshot.empty) {
-          const currentUserData = snapshot.docs
-            .map((doc) => ({ id: doc.id, ...doc.data() }))
-            .find((doc) => doc.email === user.email);
-
-          setUserData(currentUserData);
+          const allUsers: User[] = snapshot.docs.map((doc) => ({
+            ...(doc.data() as Omit<User, "id">), // Exclude `id` from Firestore data
+            id: doc.id, // Add the `id` explicitly
+          }));
+          const currentUserData = allUsers.find((doc) => doc.email === user.email);
+          setUserData(currentUserData || null);
         }
       } catch (error) {
         console.error("Error fetching user data:", error);
@@ -68,8 +85,12 @@ export default function SubmissionPage() {
         const usersRef = collection(db, "users");
         const snapshot = await getDocs(usersRef);
 
-        const allUsers = snapshot.docs
-          .map((doc) => ({ id: doc.id, ...doc.data() }))
+        const allUsers: User[] = snapshot.docs.map((doc) => ({
+          ...(doc.data() as Omit<User, "id">),
+          id: doc.id,
+        }));
+
+        const filteredUsers = allUsers
           .filter(
             (doc) =>
               doc.username.toLowerCase().includes(lowerSearchQuery) &&
@@ -77,7 +98,7 @@ export default function SubmissionPage() {
           )
           .slice(0, 5); // Limit to top 5 results
 
-        setSearchResults(allUsers);
+        setSearchResults(filteredUsers);
       } catch (error) {
         console.error("Error fetching or filtering users:", error);
       }
@@ -86,11 +107,11 @@ export default function SubmissionPage() {
     fetchAndFilterUsers();
   }, [searchQuery, userData]);
 
-  const logBattle = async (opponent, isWin) => {
+  const logBattle = async (opponent: User, isWin: boolean) => {
     if (!userData) return;
 
     const battleId = uuidv4(); // Generate a unique ID for the battle
-    const battle = {
+    const battle: Battle = {
       id: battleId,
       winner: isWin ? userData.username : opponent.username,
       loser: isWin ? opponent.username : userData.username,

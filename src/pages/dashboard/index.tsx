@@ -65,11 +65,11 @@ export default function UserDashboard() {
 
         const userIndex = allUsers.findIndex((u) => u.email === user.email);
         if (userIndex !== -1) {
-          setUserData(allUsers[userIndex]);
-          const rank =
+          const userRank =
             allUsers.filter((u) => u.score > allUsers[userIndex].score).length +
             1;
-          setCurrentRank(rank);
+          setUserData(allUsers[userIndex]);
+          setCurrentRank(userRank);
         }
       } catch (e) {
         console.error("Error fetching user data:", e);
@@ -154,20 +154,26 @@ export default function UserDashboard() {
     }
   };
 
-  const pendingBattles = allBattles.filter(
-    (battle) =>
-      battle.pending &&
-      (battle.winner === userData?.username || battle.loser === userData?.username) &&
-      battle.reporter_id !== userData?.id
-  );
+  const pendingBattles = userData
+    ? allBattles.filter(
+        (battle) =>
+          battle.pending &&
+          (battle.winner === userData.username ||
+            battle.loser === userData.username) &&
+          battle.reporter_id !== userData.id
+      )
+    : [];
 
-  const recentBattles = allBattles
-    .filter(
-      (battle) =>
-        !battle.pending &&
-        (battle.winner === userData?.username || battle.loser === userData?.username)
-    )
-    .slice(0, 5);
+  const recentBattles = userData
+    ? allBattles
+        .filter(
+          (battle) =>
+            !battle.pending &&
+            (battle.winner === userData.username ||
+              battle.loser === userData.username)
+        )
+        .slice(0, 5)
+    : [];
 
   if (loadingAuth || loadingData) {
     return <p>Loading...</p>;
@@ -204,7 +210,7 @@ export default function UserDashboard() {
               {recentBattles.length > 0 ? (
                 recentBattles.map((battle) => (
                   <p key={battle.id}>
-                    {battle.winner === userData.username
+                    {userData && battle.winner === userData.username
                       ? `You beat ${battle.loser}!`
                       : `${battle.winner} beat you!`}
                   </p>
@@ -227,7 +233,8 @@ export default function UserDashboard() {
               pendingBattles.map((battle) => (
                 <div key={battle.id} className={styles.battleItem}>
                   <p>
-                    {battle.winner === userData.username
+                    {userData &&
+                    battle.winner === userData.username
                       ? `You beat ${battle.loser}!`
                       : `${battle.winner} beat you!`}
                   </p>
