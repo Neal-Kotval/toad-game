@@ -3,20 +3,58 @@ import styles from "./Dashboard.module.scss";
 import "../../styles/globals.scss";
 import Navbar from "../../components/Navbar/Navbar";
 import { useAuthState } from "react-firebase-hooks/auth";
-import { auth } from "../../firebase/config";
+import { auth, db } from "../../firebase/config";
 import { useRouter } from "next/router";
 import { signOut } from "firebase/auth";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
+import { collection, getDocs, query, orderBy } from "firebase/firestore";
 
 export default function UserDashboard() {
-  const [user, loading, error] = useAuthState(auth); // Destructure to access user, loading, and error states
+  const [user, loadingAuth, errorAuth] = useAuthState(auth); // Auth state
+  const [userData, setUserData] = useState(null); // State for Firestore user data
+  const [currentRank, setCurrentRank] = useState(null); // State for rank
+  const [loadingData, setLoadingData] = useState(false); // Loading state for Firestore data
   const router = useRouter();
 
+  // Redirect to login if user is not authenticated
   useEffect(() => {
-    if (!loading && !user) {
+    if (!loadingAuth && !user) {
       router.push("/login");
     }
-  }, [loading, user, router]);
+  }, [loadingAuth, user, router]);
+
+  useEffect(() => {
+    if (!user) return; // Ensure user is authenticated before fetching data
+
+    const fetchUserData = async () => {
+      setLoadingData(true);
+      try {
+        const usersCollectionRef = collection(db, "users");
+        const q = query(usersCollectionRef, orderBy("score", "desc")); // Query to fetch all users sorted by score
+        const querySnapshot = await getDocs(q);
+
+        const allUsers = [];
+        querySnapshot.forEach((doc) => {
+          allUsers.push({ id: doc.id, ...doc.data() });
+        });
+
+        // Find the logged-in user and their rank
+        const userIndex = allUsers.findIndex((u) => u.email === user.email);
+        if (userIndex !== -1) {
+          setUserData(allUsers[userIndex]);
+          setCurrentRank(userIndex + 1); // Rank is index + 1
+        } else {
+          console.error("User not found in the database");
+        }
+      } catch (e) {
+        console.error("Error fetching user data:", e);
+      } finally {
+        setLoadingData(false);
+      }
+    };
+
+    fetchUserData();
+  }, [user]);
 
   const handleSignOut = async () => {
     try {
@@ -28,12 +66,12 @@ export default function UserDashboard() {
     }
   };
 
-  if (loading) {
-    return <p>Loading...</p>; // Show a loading message while checking the auth state
+  if (loadingAuth || loadingData) {
+    return <p>Loading...</p>; // Show loading message
   }
 
-  if (error) {
-    return <p>Error: {error.message}</p>; // Handle and display any auth errors
+  if (errorAuth) {
+    return <p>Error: {errorAuth.message}</p>; // Show authentication error message
   }
 
   return (
@@ -44,16 +82,22 @@ export default function UserDashboard() {
           Log Out
         </button>
         <title>User Dashboard</title>
-        <h1>Welcome Back, Player!</h1>
+        <h1 className={styles.title}>
+          Welcome Back, {userData?.username || "Player"}!
+        </h1>
         <p>Here's a quick overview of your progress and activity.</p>
 
         <div className={styles.statsSection}>
           <h2>Your Stats</h2>
-          <div className={styles.statsBox}>
-            <p>&#2022; Gold Collected: 450</p>
-            <p>&#2022; Matches Played: 12</p>
-            <p>&#2022; Current Rank: #7</p>
-          </div>
+          {userData ? (
+            <div className={styles.statsBox}>
+              <p>&#2022; Gold Collected: {userData.score || 0}</p>
+              <p>&#2022; Matches Played: {userData.matchesPlayed || 0}</p>
+              <p>&#2022; Current Rank: {currentRank || "Unranked"}</p>
+            </div>
+          ) : (
+            <p>Loading stats...</p>
+          )}
         </div>
 
         <div className={styles.recentMatchesSection}>
