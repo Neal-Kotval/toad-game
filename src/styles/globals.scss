@@ -1,12 +1,15 @@
 @use './variables.scss' as *;
 
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@font-face {
+  font-family: 'Nunito';
+  src: url('../../fonts/Nunito/Nunito-VariableFont_wght.ttf');
+  font-weight: normal;
+  font-style: normal;
+}
 
 /* Apply Vollkorn font-family to the desired elements */
 body {
-  font-family: $Nunito, serif;
+  font-family: 'Nunito', serif;
   background-image: url('/bg.png'); /* Set the background image path */
   background-size: cover; /* Adjust background image size */
   background-repeat: no-repeat; /* Prevent repeating the background */

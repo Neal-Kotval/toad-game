@@ -67,7 +67,7 @@
   text-decoration: underline;
   text-underline-offset: 0.4rem;
   font-size: 1.5rem;
-  font-family: $Nunito, sans-serif;
+  font-family: 'Nunito', sans-serif;
   cursor: pointer;
   padding: 0.5rem 2rem;
   border-radius: 4px;
@@ -101,7 +101,7 @@
   font-family: $Nunito, sans-serif;
   text-decoration: underline;
   text-underline-offset: 0.4rem;
-  padding: 0.5rem 2rem; /* Match padding of navbar links */
+  padding: 0rem 1rem; /* Match padding of navbar links */
   border-radius: 4px;
   transition: background-color 0.3s ease, box-shadow 0.3s ease;
 

@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect } from "react";
 import styles from "./login.module.scss";
+import "../../styles/globals.scss";
 import Navbar from "../../components/Navbar/Navbar"; // Import Navbar
 import { useSignInWithEmailAndPassword } from "react-firebase-hooks/auth";
 import { auth } from "../../firebase/config";

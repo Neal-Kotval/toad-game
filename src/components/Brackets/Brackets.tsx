@@ -17,7 +17,6 @@ const Brackets: React.FC = () => {
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
-    setLoading(true);
     const unsub = onSnapshot(collectionRef, (querySnapshot) => {
       const items: Player[] = [];
       querySnapshot.forEach((doc) => {

@@ -19,6 +19,7 @@ import {
     limit,
   } from 'firebase/firestore';
   import { useRouter } from "next/router";
+  import "../../styles/globals.scss";
 
 const SignUpPage: React.FC = () => {
   const [email, setEmail] = useState("");
