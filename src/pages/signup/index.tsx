@@ -25,6 +25,7 @@ const SignUpPage: React.FC = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [username, setUsername] = useState(""); // New state for username
+  const [stormbound_id, setStormboundID] = useState("")
   const [createUserWithEmailAndPassword, user, loading, error] =
     useCreateUserWithEmailAndPassword(auth);
   const collectionRef = collection(db, 'users')
@@ -36,6 +37,7 @@ const SignUpPage: React.FC = () => {
       username,
       email,
       score: 300,
+      stormbound_id,
       id: uuidv4(),
       createdAt: serverTimestamp(),
       lastUpdate: serverTimestamp(),
@@ -73,6 +75,17 @@ const SignUpPage: React.FC = () => {
         <div className={styles.signupBox}>
           <h1 className={styles.title}>Create an Account</h1>
           <form className={styles.form} onSubmit={handleSignUp}>
+          <div className={styles.inputGroup}>
+              <label htmlFor="Stormbound ID">Email</label>
+              <input
+                type="text"
+                id="stormbound_id"
+                value={stormbound_id}
+                onChange={(e) => setStormboundID(e.target.value)}
+                placeholder="Enter your Stormbound ID"
+                required
+              />
+            </div>
             <div className={styles.inputGroup}>
               <label htmlFor="email">Email</label>
               <input
