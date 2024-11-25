@@ -35,7 +35,7 @@ const Brackets: React.FC = () => {
     return () => {
       unsub();
     };
-  }, []);
+  }, [collectionRef]);
 
   // Sort the players array based on their score in descending order
   const sortedPlayers = [...players].sort((a, b) => b.score - a.score);

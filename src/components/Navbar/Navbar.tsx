@@ -54,7 +54,7 @@ const Navbar: React.FC = () => {
     <nav>
       <div className={styles.nav_box}>
         <div className={styles.logo}>
-          <Link href="/">Tode Games</Link>
+          <Link href="/">Toad Game</Link>
         </div>
         {isMobile && (
           <button
