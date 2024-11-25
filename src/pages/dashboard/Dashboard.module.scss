@@ -142,3 +142,27 @@ $error-color: #cf6679;
     background-color: #e53935;
   }
 }
+
+.dashboard {
+  display: grid;
+  grid-template-columns: 1fr 1fr; /* Two equal parts for larger screens */
+  gap: 20px;
+  padding: 20px;
+  color: $text-color; /* Ensure all text within the dashboard uses the correct color */
+
+  @media (max-width: 768px) {
+    grid-template-columns: 1fr; /* Stack sections vertically for smaller screens */
+  }
+}
+
+.leftSection,
+.rightSection {
+  background-color: rgba(255, 255, 255, 0.1);
+  padding: 15px;
+  border-radius: 10px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+
+  @media (max-width: 768px) {
+    margin-bottom: 20px; /* Add spacing between stacked sections */
+  }
+}

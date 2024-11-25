@@ -1,57 +1,84 @@
-// components/Login.module.scss
 @use '../../styles/variables' as *;
 
 .container {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
-  }
-  
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  padding: 10px; /* Add padding for spacing on smaller screens */
+}
+
+.form {
+  background-color: #f5f5f5;
+  border-radius: 10px;
+  padding: 20px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  width: 100%;
+  max-width: 300px; /* Constrain max width for larger screens */
+  box-sizing: border-box; /* Ensure padding is included in width */
+}
+
+.loginHeading {
+  text-align: center;
+  margin-bottom: 20px;
+  font-size: 24px; /* Smaller font for mobile */
+}
+
+.inputGroup {
+  margin-bottom: 15px;
+}
+
+.loginLabel {
+  display: block;
+  font-weight: bold;
+  margin-bottom: 5px;
+  font-size: 14px; /* Slightly smaller for mobile */
+}
+
+.loginInput {
+  width: 100%;
+  padding: 10px; /* Increase padding for touch targets */
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  font-size: 14px; /* Adjust font size */
+}
+
+.loginButton {
+  width: 100%;
+  padding: 12px; /* Adjust padding for mobile */
+  background-color: #0070f3;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+  font-size: 16px; /* Ensure text is readable on smaller screens */
+}
+
+.loginButton:hover {
+  background-color: #0052cc;
+}
+
+/* Responsive styles for smaller screens */
+@media (max-width: 480px) {
   .form {
-    background-color: #f5f5f5;
-    border-radius: 10px;
-    padding: 20px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    width: 300px;
+    padding: 15px;
   }
-  
+
   .loginHeading {
-    text-align: center;
-    margin-bottom: 20px;
-    font-size: 30px;
+    font-size: 20px;
   }
-  
-  .inputGroup {
-    margin-bottom: 15px;
-  }
-  
+
   .loginLabel {
-    display: block;
-    font-weight: bold;
-    margin-bottom: 5px;
+    font-size: 12px;
   }
-  
+
   .loginInput {
-    width: 100%;
     padding: 8px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
   }
-  
-  /* Add a local class "loginButton" to the button selector */
+
   .loginButton {
-    width: 100%;
     padding: 10px;
-    background-color: #0070f3;
-    color: #fff;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    transition: background-color 0.3s;
+    font-size: 14px;
   }
-  
-  .loginButton:hover {
-    background-color: #0052cc;
-  }
-  
+}

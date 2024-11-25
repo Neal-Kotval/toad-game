@@ -203,7 +203,6 @@ export default function UserDashboard() {
               <p>Loading stats...</p>
             )}
           </div>
-
           <div className={styles.recentMatchesSection}>
             <h2 className={styles.statstext}>Recent Matches</h2>
             <div className={styles.recentMatchesBox}>
@@ -220,12 +219,11 @@ export default function UserDashboard() {
               )}
             </div>
           </div>
-
           <button onClick={handleSignOut} className={styles.signOutButton}>
             Log Out
           </button>
         </div>
-
+  
         <div className={styles.rightSection}>
           <h2 className={styles.statstext}>Messages</h2>
           <div className={styles.messageBox}>
@@ -233,8 +231,7 @@ export default function UserDashboard() {
               pendingBattles.map((battle) => (
                 <div key={battle.id} className={styles.battleItem}>
                   <p>
-                    {userData &&
-                    battle.winner === userData.username
+                    {userData && battle.winner === userData.username
                       ? `You beat ${battle.loser}!`
                       : `${battle.winner} beat you!`}
                   </p>
@@ -259,5 +256,5 @@ export default function UserDashboard() {
         </div>
       </div>
     </div>
-  );
+  );  
 }

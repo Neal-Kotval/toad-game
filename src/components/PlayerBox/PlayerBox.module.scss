@@ -1,51 +1,50 @@
-/* components/PlayerBox.module.scss */
 @use '../../styles/variables' as *;
 
 .image_with_overlay {
-    position: relative;
-    width: 100%; /* Use percentage-based width */
-    height: 100%; /* Use percentage-based height */
-    max-width:1322px;
-    max-height:177px;
-    margin: 0 auto;
-    padding: 0.1rem 0;
+  position: relative;
+  width: 100%; /* Use full width */
+  max-width: 1322px; /* Match image dimensions for aspect ratio */
+  aspect-ratio: 1322 / 177; /* Maintain original aspect ratio */
+  overflow: hidden; /* Prevent content from overflowing the container */
+  margin: 0 auto;
+  border-radius: 10px; /* Optional: Add rounded corners */
+  padding: 0.1rem 0;
 
-    transition: transform 0.3s; /* Add transition for smooth effect */
-
-    img {
-        width:100%;
-    }
-  
-    .text_container {
-        margin:0;
-        position: absolute;
-        left:15%;
-        right:20%;
-        top: 50%;
-        transform: translateY(-50%);
-        display: flex; /* Use Flexbox */
-        justify-content: space-between; /* Items will be evenly spaced */
-        align-items: center; /* Align items vertically */
-        padding: 0 8px; /* Add padding to the container */
-    }
-  
-    .name_text,
-    .score_text {
-      color: #fff;
-      font-size: 3vw; /* Use viewport units for font-size */
-      padding: 8px;
-      display:flex;
-      align-items: center;
-    }
-
-    .coin_image {
-        width: 30px;
-        margin-left: 5px; /* Add some spacing between the coin image and text */
-      }
-
-      &:hover {
-        transform: scale(1.05); /* Increase the scale (adjust as desired) */
-      }
-    
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover; /* Ensure the image covers the container while keeping its aspect ratio */
   }
-  
+
+  .text_container {
+    margin: 0;
+    position: absolute;
+    left: 15%;
+    right: 20%;
+    top: 50%;
+    transform: translateY(-50%);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 8px;
+  }
+
+  .name_text,
+  .score_text {
+    color: #fff;
+    font-size: clamp(1rem, 3vw, 2rem); /* Responsive font size */
+    padding: 8px;
+    display: flex;
+    align-items: center;
+  }
+
+  .coin_image {
+    width: 30px;
+    height: auto; /* Maintain aspect ratio */
+    margin-left: 5px;
+  }
+
+  &:hover {
+    transform: scale(1.05); /* Scale the entire container */
+  }
+}

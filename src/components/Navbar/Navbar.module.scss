@@ -57,7 +57,7 @@
 }
 
 .navbar_links li {
-  margin: 0.5rem 0;
+  margin: 0.5rem 1rem;
 }
 
 .navbar_links li a {
@@ -112,9 +112,7 @@
   /* Remove any default outline or box-shadow */
   outline: none;
   box-shadow: none;
-
 }
-
 
 .hamburger {
   display: none; /* Hidden by default on larger screens */
@@ -129,6 +127,10 @@
   &.open {
     transform: rotate(180deg); /* Optional animation for ^ icon */
   }
+
+  /* Adjust positioning */
+  margin-left: auto; /* Push hamburger to the right */
+  margin-right: 2rem; /* Add spacing from the edge */
 }
 
 @media (max-width: 768px) {
